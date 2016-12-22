@@ -19,11 +19,10 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 public class Login extends AppCompatActivity {
-
-    //Voisiko tämä GtitHub toimia???
+    
     //Moi alppu!
     //Ja Huisko
-
+    //tämähän on oikein näppärä
     String data;
     private EditText user;
     private EditText rpass;
