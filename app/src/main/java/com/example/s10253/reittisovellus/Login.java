@@ -28,7 +28,7 @@ public class Login extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        //Moi allppu
         Intent intent = getIntent();
 
         super.onCreate(savedInstanceState);
