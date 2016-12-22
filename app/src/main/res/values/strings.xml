@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Reittisovellus</string>
+    <string name="user">Email</string>
+    <string name="name">Name</string>
+    <string name="pass">Password</string>
+    <string name="rpass">Rewrite password</string>
+    <string name="title_activity_main">Map</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_menu">MenuActivity</string>
+
+
+</resources>

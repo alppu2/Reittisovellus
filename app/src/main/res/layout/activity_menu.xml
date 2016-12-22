@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_menu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.s10253.reittisovellus.MenuActivity">
+
+    <TextView
+        android:text="welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="13dp"
+        android:id="@+id/welcome" />
+
+    <Button
+        android:text="Aloita harjoittelu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:id="@+id/StartTraining"
+        android:layout_below="@+id/welcome"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Vaihda salasana"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ChangePass"
+        android:layout_below="@+id/StartTraining"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Kirjaudu ulos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Logout"
+        android:layout_below="@+id/ChangePass"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>
