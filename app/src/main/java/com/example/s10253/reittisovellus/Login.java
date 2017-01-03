@@ -20,6 +20,12 @@ import java.util.concurrent.ExecutionException;
 
 public class Login extends AppCompatActivity {
 
+    //Moi alppu!
+    //Ja Huisko
+    //tämähän on oikein näppärä
+
+    //Moi aLEKSI!!!!!!!!
+    
     String data;
     private EditText user;
     private EditText rpass;
@@ -60,21 +66,35 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String url = "";
-
+                String params = "";
                 if (chkReg.isChecked()) {
                     if (rpass.getText().toString().equals(pass.getText().toString())) {
-                        url = "http://codez.savonia.fi/etp4310_2016/mtb3/register.php?email=" + user.getText().toString() + "&password=" + pass.getText().toString() + "&name=" + name.getText().toString();
+                        params="email=" + user.getText().toString() + "&password=" + pass.getText().toString() + "&name=" + name.getText().toString();
+                        url = "http://codez.savonia.fi/etp4310_2016/mtb3/register.php";
                     } else {
                         Toast.makeText(getApplicationContext(), "Salasanat eivät täsmää!", Toast.LENGTH_SHORT).show();
                     }
                 } else if (!chkReg.isChecked()) {
-                    url = "http://codez.savonia.fi/etp4310_2016/mtb3/login.php?email=" + user.getText().toString() + "&password=" + pass.getText().toString();
+                    params = "email=" + user.getText().toString() + "&password=" + pass.getText().toString();
+                    url = "http://codez.savonia.fi/etp4310_2016/mtb3/login.php";
                 }
 
-
-
                 try {
-                    data = new DownloadHttpTask().execute(url).get();
+                    data = new DownloadHttpTask().execute(url, params).get();
+
+                    if (data.toString().equals("OK")) {
+                        Toast.makeText(getApplicationContext(), "Kirjautuminen onnistui", Toast.LENGTH_LONG).show();
+                    } else if(data.equals("PASSWORD ERROR")) {
+                        Toast.makeText(getApplicationContext(), "Salasanasi tai tunnuksesi on väärin!", Toast.LENGTH_LONG).show();
+                    }
+
+                    // REGISTER MESSAGET
+                    else if(data.equals("EMAIL ERROR")) {
+                        Toast.makeText(getApplicationContext(), "Käyttäjätunnus on rekisteröity jo", Toast.LENGTH_LONG).show();
+                    }
+                    else if(data.equals("REGISTER OK")) {
+                        Toast.makeText(getApplicationContext(), "Rekisteröinti onnistui", Toast.LENGTH_LONG).show();
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
@@ -87,82 +107,4 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    public class DownloadHttpTask extends AsyncTask<String, Void, String>
-    {
-        private ProgressDialog dialog = new ProgressDialog(Login.this);
-
-        @Override
-        protected String doInBackground(String... params) {
-            // TODO Auto-generated method stub
-            String result = "";
-
-            URL url;
-
-            try {
-                url = new URL(params[0]);
-
-                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-
-                // Toimii tämä ao.
-                //URLConnection conn = url.openConnection();
-
-                // InputStreamReader:lle voi antaa encoding:ksi UTF-8 jos tulee ongelmia ...
-                BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-                String line  = "";
-                StringBuffer buffer = new StringBuffer();
-
-                while ( (line = rd.readLine()) != null )
-                {
-                    buffer.append(line);
-                    Log.i("line", line);
-                }
-
-                //HttpClient httpclient = new HttpClient();
-
-                //conn.getResponseCode()
-                result = buffer.toString();
-                Log.i("result", result);
-            }
-            catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                //_tView.setText(e.getMessage());
-                //Toast.makeText(getApplicationContext(), "catch", Toast.LENGTH_LONG).show();
-            }
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            // TODO Auto-generated method stub
-            //super.onPostExecute(result);
-            dialog.dismiss();
-
-            // LOGIN MESSAGET
-            if (result.toString().equals("OK")) {
-                Toast.makeText(getApplicationContext(), "Kirjautuminen onnistui", Toast.LENGTH_LONG).show();
-            } else if(result.equals("PASSWORD ERROR")) {
-                Toast.makeText(getApplicationContext(), "Salasanasi tai tunnuksesi on väärin!", Toast.LENGTH_LONG).show();
-            }
-
-            // REGISTER MESSAGET
-            else if(result.equals("EMAIL ERROR")) {
-                Toast.makeText(getApplicationContext(), "Käyttäjätunnus on rekisteröity jo", Toast.LENGTH_LONG).show();
-            }
-            else if(result.equals("REGISTER OK")) {
-                Toast.makeText(getApplicationContext(), "Rekisteröinti onnistui", Toast.LENGTH_LONG).show();
-            }
-        }
-
-        @Override
-        protected void onPreExecute() {
-            // TODO Auto-generated method stub
-            //super.onPreExecute();
-
-            dialog.setMessage("Odota haetaan dataa...");
-            dialog.setTitle("Odota");
-            dialog.show();
-        }
-    }
 }
