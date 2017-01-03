@@ -23,6 +23,8 @@ public class Login extends AppCompatActivity {
     //Moi alppu!
     //Ja Huisko
     //tämähän on oikein näppärä
+
+    //Moi aLEKSI!!!!!!!!
     
     String data;
     private EditText user;
