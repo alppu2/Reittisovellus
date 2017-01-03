@@ -81,9 +81,12 @@ public class Login extends AppCompatActivity {
 
                 try {
                     data = new DownloadHttpTask().execute(url, params).get();
-
-                    if (data.toString().equals("OK")) {
+                    String splitData[] = data.split("-");
+                    if (splitData[0].toString().equals("OK")) {
                         Toast.makeText(getApplicationContext(), "Kirjautuminen onnistui", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+                        intent.putExtra("USER_ID", splitData[1]);
+                        startActivity(intent);
                     } else if(data.equals("PASSWORD ERROR")) {
                         Toast.makeText(getApplicationContext(), "Salasanasi tai tunnuksesi on väärin!", Toast.LENGTH_LONG).show();
                     }
@@ -101,7 +104,7 @@ public class Login extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 if (data.equals("OK") || data.equals(("REGISTER OK"))) {
-                    startActivity(new Intent(getApplicationContext(), MenuActivity.class));
+                    Toast.makeText(getApplicationContext(), "Rekisteröinti onnistui", Toast.LENGTH_LONG).show();
                 }
             }
         });

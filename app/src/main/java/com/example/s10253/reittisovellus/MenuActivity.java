@@ -40,7 +40,19 @@ public class MenuActivity extends AppCompatActivity {
         final Button changePass = (Button) findViewById(R.id.ChangePass);
         final Button logout = (Button) findViewById(R.id.Logout);
 
-        welcomeText.setText("Tervetuloa: ");
+        String params = "userId="+getIntent().getStringExtra("USER_ID");
+        String url = "http://codez.savonia.fi/etp4310_2016/mtb3/getUser.php";
+        String name="";
+        try {
+            Toast.makeText(getApplicationContext(), params, Toast.LENGTH_LONG).show();
+            name = new DownloadHttpTask().execute(url,params).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        welcomeText.setText("Tervetuloa: "+name);
 
         startTraining.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +67,7 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ShowAlert();
 
-                String url = "";
+                String url = "http://codez.savonia.fi/etp4310_2016/mtb3/ChangePassword.php";
 
                 try {
                     data = new DownloadHttpTask().execute(url).get();
@@ -125,82 +137,4 @@ public class MenuActivity extends AppCompatActivity {
         builder.show();
     }
 
-    public class DownloadHttpTask extends AsyncTask<String, Void, String>
-    {
-        private ProgressDialog dialog = new ProgressDialog(MenuActivity.this);
-
-        @Override
-        protected String doInBackground(String... params) {
-            // TODO Auto-generated method stub
-            String result = "";
-
-            URL url;
-
-            try {
-                url = new URL(params[0]);
-
-                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-
-                // Toimii tämä ao.
-                //URLConnection conn = url.openConnection();
-
-                // InputStreamReader:lle voi antaa encoding:ksi UTF-8 jos tulee ongelmia ...
-                BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-                String line  = "";
-                StringBuffer buffer = new StringBuffer();
-
-                while ( (line = rd.readLine()) != null )
-                {
-                    buffer.append(line);
-                    Log.i("line", line);
-                }
-
-                //HttpClient httpclient = new HttpClient();
-
-                //conn.getResponseCode()
-                result = buffer.toString();
-                Log.i("result", result);
-            }
-            catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                //_tView.setText(e.getMessage());
-                //Toast.makeText(getApplicationContext(), "catch", Toast.LENGTH_LONG).show();
-            }
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            // TODO Auto-generated method stub
-            //super.onPostExecute(result);
-            dialog.dismiss();
-
-            // LOGIN MESSAGET
-            if (result.toString().equals("OK")) {
-                Toast.makeText(getApplicationContext(), "Kirjautuminen onnistui", Toast.LENGTH_LONG).show();
-            } else if(result.equals("PASSWORD ERROR")) {
-                Toast.makeText(getApplicationContext(), "Salasanasi tai tunnuksesi on väärin!", Toast.LENGTH_LONG).show();
-            }
-
-            // REGISTER MESSAGET
-            else if(result.equals("EMAIL ERROR")) {
-                Toast.makeText(getApplicationContext(), "Käyttäjätunnus on rekisteröity jo", Toast.LENGTH_LONG).show();
-            }
-            else if(result.equals("REGISTER OK")) {
-                Toast.makeText(getApplicationContext(), "Rekisteröinti onnistui", Toast.LENGTH_LONG).show();
-            }
-        }
-
-        @Override
-        protected void onPreExecute() {
-            // TODO Auto-generated method stub
-            //super.onPreExecute();
-
-            dialog.setMessage("Odota haetaan dataa...");
-            dialog.setTitle("Odota");
-            dialog.show();
-        }
-    }
 }
